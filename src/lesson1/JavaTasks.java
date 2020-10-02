@@ -3,9 +3,8 @@ package lesson1;
 import kotlin.NotImplementedError;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.Map.*;
 
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
@@ -179,6 +178,7 @@ public class JavaTasks {
         трудоемкость: T = O(n+k)
         ресурсоемкость: R = O(n+k)
         k - диапазон значений
+        При n >> k приводится к 0(n)
      */
     static public void sortTemperatures(String inputName, String outputName) throws IOException {
         FileReader fileReader = new FileReader(inputName);
@@ -251,7 +251,7 @@ public class JavaTasks {
      * 2
      * 2
      */
-    static public void sortSequence(String inputName, String outputName) {
+    static public void sortSequence(String inputName, String outputName) throws IOException {
         throw new NotImplementedError();
     }
 

@@ -45,6 +45,29 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
+
+        try {
+            sortTimes("input/time_in4.txt", "temp.txt")
+            assertFileContent("temp.txt", File("input/time_out4.txt").readLines())
+        } finally {
+            File("temp.txt").delete()
+        }
+        try {
+            sortTimes("input/time_in5.txt", "temp.txt")
+            assertFileContent("temp.txt",
+                """
+                     12:00:01 AM
+                     05:11:11 AM
+                     05:11:11 AM
+                     05:11:12 AM
+                     12:00:01 PM
+                     05:11:11 PM
+                """.trimIndent()
+            )
+        } finally {
+            File("temp.txt").delete()
+        }
+
     }
 
     protected fun sortAddresses(sortAddresses: (String, String) -> Unit) {
@@ -115,6 +138,43 @@ abstract class AbstractTaskTests : AbstractFileTests() {
                     121.3
                 """.trimIndent()
             )
+        } finally {
+            File("temp.txt").delete()
+        }
+
+
+        try {
+            sortTemperatures("input/temp_in2.txt", "temp.txt")
+            assertFileContent(
+                "temp.txt",
+                """
+                    0.0
+                """.trimIndent()
+            )
+        } finally {
+            File("temp.txt").delete()
+        }
+
+        try {
+            sortTemperatures("input/temp_in3.txt", "temp.txt")
+            assertFileContent(
+                "temp.txt",
+                """
+                    -200.3
+                    -140.2
+                    -100.1
+                    0.0
+                    100.6
+                    200.4
+                """.trimIndent()
+            )
+        } finally {
+            File("temp.txt").delete()
+        }
+
+        try {
+            sortTemperatures("input/temp_in4.txt", "temp.txt")
+            assertFileContent("temp.txt", File("input/temp_out4.txt").readLines())
         } finally {
             File("temp.txt").delete()
         }

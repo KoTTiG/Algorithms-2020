@@ -3,6 +3,10 @@ package lesson2;
 import kotlin.NotImplementedError;
 import kotlin.Pair;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 @SuppressWarnings("unused")
 public class JavaAlgorithms {
     /**
@@ -97,8 +101,33 @@ public class JavaAlgorithms {
      * Если имеется несколько самых длинных общих подстрок одной длины,
      * вернуть ту из них, которая встречается раньше в строке first.
      */
-    static public String longestCommonSubstring(String firs, String second) {
-        throw new NotImplementedError();
+    /*
+        трудоемкость: T = O(n*m)
+        ресурсоемкость: R = O(n*m)
+        n, m - длины строк
+     */
+    static public String longestCommonSubstring(String first, String second) {
+        if (first.isEmpty() || second.isEmpty()) return "";
+        int[][] matrix = new int[first.length()][second.length()];
+        int longest = 0;
+        int longestEnd = 0;
+
+        for (int i=0; i<first.length();i++) {
+            for (int j = 0; j< second.length(); j++){
+                if (first.charAt(i) == second.charAt(j)){
+                    try {
+                        matrix[i][j] = matrix[i-1][j-1] + 1;
+                    } catch (IndexOutOfBoundsException e){
+                        matrix[i][j] = 1;
+                    }
+                    if (matrix[i][j] > longest) {
+                        longest = matrix[i][j];
+                        longestEnd = i;
+                    }
+                }
+            }
+        }
+        return longest == 0 ? "" : first.substring(longestEnd-longest+1, longestEnd+1);
     }
 
     /**
@@ -112,6 +141,7 @@ public class JavaAlgorithms {
      * Единица простым числом не считается.
      */
     static public int calcPrimesNumber(int limit) {
-        throw new NotImplementedError();
+        if (limit <= 1) return 0;
+        return 0;
     }
 }

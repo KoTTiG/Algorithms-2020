@@ -61,13 +61,9 @@ public class JavaTasks {
         lines = intArrToStrList(intTime);
 
         try (PrintWriter writer = new PrintWriter(outputName, "UTF-8")) {
-
             for (String str : lines) {
                 writer.println(str);
-
             }
-        } catch (IOException ex) {
-            throw new IOException();
         }
     }
 
@@ -213,12 +209,8 @@ public class JavaTasks {
         try (PrintWriter writer = new PrintWriter(outputName, "UTF-8")) {
             for (double temper : sortedTemper) {
                 writer.println(temper);
-
             }
-        } catch (IOException ex) {
-            throw new IOException();
         }
-
 
     }
 

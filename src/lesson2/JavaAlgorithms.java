@@ -142,6 +142,16 @@ public class JavaAlgorithms {
      */
     static public int calcPrimesNumber(int limit) {
         if (limit <= 1) return 0;
-        return 0;
+        int count = 0;
+        boolean[] numbers = new boolean[limit + 1];
+        for (int i = 2; i <= limit; i++) {
+            if (!numbers[i]) {
+                count++;
+                for (int j = i * 2; j <= limit; j += i) {
+                    numbers[j] = true;
+                }
+            }
+        }
+        return count;
     }
 }

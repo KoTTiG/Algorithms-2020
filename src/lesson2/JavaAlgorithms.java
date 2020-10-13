@@ -140,6 +140,11 @@ public class JavaAlgorithms {
      * Справка: простым считается число, которое делится нацело только на 1 и на себя.
      * Единица простым числом не считается.
      */
+
+    /*
+        трудоемкость: T = O(n*log(log(n)))
+        ресурсоемкость: R = O(n)
+     */
     static public int calcPrimesNumber(int limit) {
         if (limit <= 1) return 0;
         int count = 0;

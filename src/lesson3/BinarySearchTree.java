@@ -99,11 +99,52 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
      *
      * Средняя
      */
+    /*
+        трудоемкость: T = O(log(n))
+        ресурсоемкость: R = O(log(n))
+     */
     @Override
     public boolean remove(Object o) {
-        // TODO
-        throw new NotImplementedError();
+        T value = (T) o;
+        if (root == null) return false;
+        if (!contains(o)) return false;
+        root = remove(root, value);
+        size--;
+        return true;
+
     }
+
+    private Node<T> remove(Node<T> start, T value){
+        int comparison = value.compareTo(start.value);
+        if (comparison < 0){
+            start.left = remove(start.left, value);
+            return start;
+        } else if (comparison > 0){
+            start.right = remove(start.right, value);
+            return start;
+        } else {
+            if (start.left == null && start.right == null) {
+                return null;
+            } else if (start.left == null){
+                return start.right;
+            } else if (start.right == null){
+                return start.left;
+            } else {
+                Node<T> left = start.left;
+                Node<T> right = start.right;
+                Node<T> newNode = new Node<T>(findSmallest(right).value);
+                newNode.left = left;
+                newNode.right = remove(right, newNode.value);
+                return newNode;
+            }
+        }
+    }
+    public Node<T> findSmallest (Node<T> root){
+        if (root.left == null) return root;
+        else return findSmallest(root.left);
+    }
+
+
 
     @Nullable
     @Override
@@ -118,10 +159,15 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
     }
 
     public class BinarySearchTreeIterator implements Iterator<T> {
+        private Node<T> next;
+        int index = 0;
+        boolean callNext = false;
+
 
         private BinarySearchTreeIterator() {
             // Добавьте сюда инициализацию, если она необходима.
         }
+
 
         /**
          * Проверка наличия следующего элемента
@@ -133,10 +179,30 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
          *
          * Средняя
          */
+        /*
+        трудоемкость: T = O(log(n))
+        ресурсоемкость: R = O(log(n))
+        */
         @Override
         public boolean hasNext() {
-            // TODO
-            throw new NotImplementedError();
+            if (root == null) return false;
+            Node<T> first = null;
+            if (next == null && index == 0) first = findSmallest(root);
+            if (first != null) return findNext(first) != null;
+            return findNext(next) != null;
+        }
+
+        private Node<T> findNext(Node<T> node) {
+            Node<T> current = root;
+            Node<T> successor = null;
+            while (current != null){
+                if (current.value.compareTo(node.value) > 0) {
+                    successor = current;
+                    current = current.left;
+                }
+                else current = current.right;
+            }
+            return successor;
         }
 
         /**
@@ -152,10 +218,23 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
          *
          * Средняя
          */
+        /*
+        трудоемкость: T = O(log(n))
+        ресурсоемкость: R = O(log(n))
+        */
         @Override
         public T next() {
-            // TODO
-            throw new NotImplementedError();
+            if(index == size) throw new NoSuchElementException();
+            if (next == null && index == 0) {
+                next = findSmallest(root);
+            }else {
+                next = findNext(next);
+
+            }
+            index++;
+            callNext = true;
+            return next.value;
+
         }
 
         /**
@@ -170,10 +249,16 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
          *
          * Сложная
          */
+        /*
+        трудоемкость: T = O(log(n))
+        ресурсоемкость: R = O(log(n))
+        */
         @Override
         public void remove() {
-            // TODO
-            throw new NotImplementedError();
+            if (!callNext) throw new IllegalStateException();
+            BinarySearchTree.this.remove(next.value);
+            index--;
+            callNext = false;
         }
     }
 

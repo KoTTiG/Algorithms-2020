@@ -101,20 +101,25 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
      */
     /*
         трудоемкость: T = O(log(n))
-        ресурсоемкость: R = O(log(n))
+        ресурсоемкость: R = O(1)
      */
+    private boolean hasRemoved;
     @Override
     public boolean remove(Object o) {
+        hasRemoved = false;
         T value = (T) o;
-        if (root == null) return false;
-        if (!contains(o)) return false;
         root = remove(root, value);
-        size--;
-        return true;
+        if (hasRemoved){
+            size--;
+        }
+        return hasRemoved;
 
     }
 
     private Node<T> remove(Node<T> start, T value){
+        if (start == null){
+            return root;
+        }
         int comparison = value.compareTo(start.value);
         if (comparison < 0){
             start.left = remove(start.left, value);
@@ -123,6 +128,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
             start.right = remove(start.right, value);
             return start;
         } else {
+            hasRemoved=true;
             if (start.left == null && start.right == null) {
                 return null;
             } else if (start.left == null){
@@ -181,7 +187,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
          */
         /*
         трудоемкость: T = O(log(n))
-        ресурсоемкость: R = O(log(n))
+        ресурсоемкость: R = O(1)
         */
         @Override
         public boolean hasNext() {
@@ -220,7 +226,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
          */
         /*
         трудоемкость: T = O(log(n))
-        ресурсоемкость: R = O(log(n))
+        ресурсоемкость: R = O(1)
         */
         @Override
         public T next() {
@@ -229,7 +235,6 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
                 next = findSmallest(root);
             }else {
                 next = findNext(next);
-
             }
             index++;
             callNext = true;
@@ -251,7 +256,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
          */
         /*
         трудоемкость: T = O(log(n))
-        ресурсоемкость: R = O(log(n))
+        ресурсоемкость: R = O(1)
         */
         @Override
         public void remove() {

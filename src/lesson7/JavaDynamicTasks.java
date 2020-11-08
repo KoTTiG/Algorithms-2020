@@ -2,6 +2,8 @@ package lesson7;
 
 import kotlin.NotImplementedError;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -34,8 +36,32 @@ public class JavaDynamicTasks {
      * то вернуть ту, в которой числа расположены раньше (приоритет имеют первые числа).
      * В примере ответами являются 2, 8, 9, 12 или 2, 5, 9, 12 -- выбираем первую из них.
      */
+    /*
+        трудоемкость: T = O(n^2)
+        ресурсоемкость: R = O(n)
+     */
     public static List<Integer> longestIncreasingSubSequence(List<Integer> list) {
-        throw new NotImplementedError();
+        if (list.size()<=1) return list;
+        List<Integer> subSeqLengths = new ArrayList<>();
+        List<Integer> parents = new ArrayList<>();
+
+        for (int i=0; i<list.size(); ++i) {
+            subSeqLengths.add(i,-1);
+            parents.add(i,-1);
+            for (int j=0; j<i; ++j)
+                if (list.get(j) < list.get(i))
+                    if (subSeqLengths.get(j) +1 > subSeqLengths.get(i)) {
+                        subSeqLengths.set(i, subSeqLengths.get(j) + 1);
+                        parents.set(i, j);
+                    }
+        }
+        int longestIndex = subSeqLengths.indexOf(Collections.max(subSeqLengths));
+        List<Integer> subSeq = new ArrayList<>();
+        while (longestIndex != -1){
+            subSeq.add(0, list.get(longestIndex));
+            longestIndex = parents.get(longestIndex);
+        }
+        return subSeq;
     }
 
     /**

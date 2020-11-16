@@ -20,21 +20,27 @@ public class JavaDynamicTasks {
      * Если есть несколько самых длинных общих подпоследовательностей, вернуть любую из них.
      * При сравнении подстрок, регистр символов *имеет* значение.
      */
+    /*
+        трудоемкость: T = O(n*m)
+        ресурсоемкость: R = O(n*m)
+        n - длина стоки first
+        m - длина стоки second
+     */
     public static String longestCommonSubSequence(String first, String second) {
-        if (second.length()>first.length()) return longestCommonSubSequence(second,first);
+        if (second.length() > first.length()) return longestCommonSubSequence(second, first);
         if (second.length() == 1) {
             if (first.contains(second)) return second;
             else return "";
         }
 
-        int[][] count =new int[first.length()+1][second.length()+1];
+        int[][] count = new int[first.length() + 1][second.length() + 1];
 
-        for (int i = 0; i<first.length();i++){
-            for (int j = 0; j<second.length();j++){
+        for (int i = 0; i < first.length(); i++) {
+            for (int j = 0; j < second.length(); j++) {
                 if (first.charAt(i) == second.charAt(j)) {
-                    count[i+1][j+1] = count[i][j] + 1;
-                }else{
-                    count[i+1][j+1]= Math.max(count[i+1][j], count[i][j+1]);
+                    count[i + 1][j + 1] = count[i][j] + 1;
+                } else {
+                    count[i + 1][j + 1] = Math.max(count[i + 1][j], count[i][j + 1]);
                 }
             }
         }
@@ -42,15 +48,15 @@ public class JavaDynamicTasks {
         StringBuilder subSeq = new StringBuilder();
         int i = first.length();
         int j = second.length();
-        while (i > 0 && j > 0){
-            if (first.charAt(i-1) == second.charAt(j-1)){
-                subSeq.insert(0,first.charAt(i-1));
-                i-=1;
-                j-=1;
-            } else if (i>0 && j>0 && count[i-1][j] > count[i][j-1]){
-                i-=1;
+        while (i > 0 && j > 0) {
+            if (first.charAt(i - 1) == second.charAt(j - 1)) {
+                subSeq.insert(0, first.charAt(i - 1));
+                i -= 1;
+                j -= 1;
+            } else if (i > 0 && j > 0 && count[i - 1][j] > count[i][j - 1]) {
+                i -= 1;
             } else {
-                j-=1;
+                j -= 1;
             }
         }
         return subSeq.toString();

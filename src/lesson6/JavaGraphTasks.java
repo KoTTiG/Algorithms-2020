@@ -1,9 +1,9 @@
 package lesson6;
 
 import kotlin.NotImplementedError;
+import lesson6.impl.GraphBuilder;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public class JavaGraphTasks {
@@ -66,8 +66,32 @@ public class JavaGraphTasks {
      * J ------------ K
      */
     public static Graph minimumSpanningTree(Graph graph) {
-        throw new NotImplementedError();
+        if (graph.getVertices().size() < 3) return graph;
+        GraphBuilder mst = new GraphBuilder();
+        Set<Graph.Vertex> vertices = new HashSet<>();
+        Deque<Graph.Vertex> unvisitedVerts = new LinkedList<>();
+
+        unvisitedVerts.add(graph.getVertices().iterator().next());
+
+        Graph.Vertex currentVert;
+        vertices.add(unvisitedVerts.peek());
+
+        while (!unvisitedVerts.isEmpty()) {
+            currentVert = unvisitedVerts.remove();
+            for (Graph.Vertex vertex : graph.getNeighbors(currentVert)) {
+                if (!vertices.contains(vertex)) {
+                    unvisitedVerts.add(vertex);
+                    mst.addVertex(currentVert.toString());
+                    mst.addVertex(vertex.toString());
+                    mst.addConnection(currentVert, vertex, 1);
+                    vertices.add(vertex);
+                }
+            }
+        }
+        return mst.build();
     }
+
+
 
     /**
      * Максимальное независимое множество вершин в графе без циклов.

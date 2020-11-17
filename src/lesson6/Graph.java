@@ -40,6 +40,9 @@ public interface Graph {
     }
 
     @NotNull
+    default int getNeighborsSize(@NotNull  Vertex v) {return getConnections(v).size();}
+
+    @NotNull
     Map<Vertex, Edge> getConnections(@NotNull Vertex v);
 
     @Nullable

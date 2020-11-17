@@ -181,6 +181,22 @@ abstract class AbstractGraphTests {
         val tree3 = graph3.minimumSpanningTree()
         assertEquals(4, tree3.edges.size)
         assertEquals(4, tree3.findBridges().size)
+
+        val graph4 = GraphBuilder().apply {
+            val a = addVertex("A")
+        }.build()
+        val tree4 = graph4.minimumSpanningTree()
+        assertEquals(0, tree4.edges.size)
+        assertEquals(1, tree4.vertices.size)
+
+        val graph5 = GraphBuilder().apply {
+            val a = addVertex("A")
+            val b = addVertex("B")
+            addConnection(a, b)
+        }.build()
+        val tree5 = graph5.minimumSpanningTree()
+        assertEquals(1, tree5.edges.size)
+        assertEquals(2, tree5.vertices.size)
     }
 
     fun largestIndependentVertexSet(largestIndependentVertexSet: Graph.() -> Set<Graph.Vertex>) {

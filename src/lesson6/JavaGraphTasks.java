@@ -1,6 +1,7 @@
 package lesson6;
 
 import kotlin.NotImplementedError;
+import kotlin.Pair;
 import lesson6.impl.GraphBuilder;
 
 import java.util.*;
@@ -33,9 +34,55 @@ public class JavaGraphTasks {
      * Справка: Эйлеров цикл -- это цикл, проходящий через все рёбра
      * связного графа ровно по одному разу
      */
+    /*
+        трудоемкость: T = O(v+e)
+        ресурсоемкость: R = O(v+e)
+        v - вершины
+        e - грани
+     */
     public static List<Graph.Edge> findEulerLoop(Graph graph) {
-        throw new NotImplementedError();
+        if (graph.getEdges().size() == 0) return new ArrayList<>();
+        Map<Graph.Vertex, Set<Graph.Vertex>> neighborsMap = new HashMap<>();
+        int count = 0;
+
+        for (Graph.Vertex vert: graph.getVertices()){
+            Set<Graph.Vertex> neighbors = graph.getNeighbors(vert);
+            if (neighbors.size() % 2 == 1) {
+                count++;
+                if (count == 2) return new ArrayList<>();
+            }
+            neighborsMap.put(vert,neighbors);
+        }
+
+        Deque<Graph.Vertex> currPath = new LinkedList<>();
+        currPath.add(graph.getVertices().iterator().next());
+        List<Graph.Vertex> circuit = new ArrayList<>();
+
+        while (!currPath.isEmpty()) {
+            Graph.Vertex current = currPath.getLast();
+            if (!neighborsMap.get(current).isEmpty()) {
+                Graph.Vertex next = neighborsMap.get(current).iterator().next();
+                neighborsMap.get(current).remove(next);
+                neighborsMap.get(next).remove(current);
+                currPath.addLast(next);
+            } else {
+                currPath.removeLast();
+                circuit.add(current);
+            }
+        }
+
+        List<Graph.Edge> result = new ArrayList<>();
+        for (int i = 0; i < circuit.size()-1; i++) {
+            result.add(graph.getConnection(circuit.get(i), circuit.get(i+1)));
+        }
+        return result;
+
     }
+
+
+
+
+
 
     /**
      * Минимальное остовное дерево.
@@ -64,6 +111,12 @@ public class JavaGraphTasks {
      * E    F    I
      * |
      * J ------------ K
+     */
+    /*
+        трудоемкость: T = O(v+e)
+        ресурсоемкость: R = O(v+e)
+        v - вершины
+        e - грани
      */
     public static Graph minimumSpanningTree(Graph graph) {
         if (graph.getVertices().size() < 3) return graph;
